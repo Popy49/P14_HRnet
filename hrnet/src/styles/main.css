@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic&subset=latin,latin-ext");
+
+body {
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.header__logoImage {
+  width: 200px;
+}
+
+.header__title {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.formLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+.formLabel > input {
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 15px;
+  -webkit-box-shadow: 1px 0px 3px 0px #8d8d8d;
+  box-shadow: 1px 0px 3px 0px #8d8d8d;
+  border: 1px solid rgba(134, 134, 134, 0.5);
+}
+
+.formNewEmployee {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}

@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom"
+import logo from "../assets/logo.jpg"
 
 function Header() {
   return (
     <div>
-      <h1>HRnet</h1>
-      <Link to={`/user`} className="main-nav-item flex-center">
-        <span>View Current Employees</span>
-      </Link>
+      <div className="header flex-center">
+        <Link to={`/`} className="flex-center">
+          <img className="header__logoImage" src={logo} alt="HRnet Logo" />
+        </Link>
+        <h1 className="header__title">HRnet</h1>
+      </div>
     </div>
   )
 }
