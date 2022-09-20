@@ -37,3 +37,69 @@ body {
   margin-right: auto;
   width: 50%;
 }
+
+table {
+  width: 90%;
+  margin: auto;
+}
+
+thead > tr > th {
+  margin: auto;
+  text-align: center;
+  border-radius: 5px;
+}
+
+tbody > tr {
+  border: 3px solid rgb(183, 183, 183);
+}
+
+thead {
+  background-color: #aab77a;
+}
+
+.formNewEmployee {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.flexRowSpace {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.grey {
+  color: rgb(227, 227, 227);
+}
+
+.purple {
+  color: rgb(0, 0, 0);
+}
+
+.white {
+  color: white;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+}
+
+.verticalAlign {
+  margin-top: auto;
+  margin-bottom: auto;
+}

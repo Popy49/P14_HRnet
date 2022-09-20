@@ -1,8 +1,12 @@
 import PropTypes from "prop-types"
 import arrowIcon from "../assets/triangle-svgrepo-com.svg"
 import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc"
-// import Modal from "../utils/Modal"
-// import { Modal } from "modal-react-library"
+import HeaderArray from "../components/HeaderArray"
+import sortByKey from "../utils/sort"
+import { Modal } from "modal-react-library"
+import { useContext } from "react"
+import { useState } from "react"
+import { EmployeeContext } from "../utils/context/EmployeeProvider"
 
 /**
  * Display Employees List page
@@ -12,36 +16,14 @@ import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc"
  * @version 1.0
  */
 
-import { useContext } from "react"
-import { useState } from "react"
-import { EmployeeContext } from "../utils/context/EmployeeProvider"
-
-function sortByKey(array, key, order) {
-  return array.sort(function (a, b) {
-    var x = a[key]
-    var y = b[key]
-    if (typeof x == "string") {
-      x = ("" + x).toLowerCase()
-    }
-    if (typeof y == "string") {
-      y = ("" + y).toLowerCase()
-    }
-    if (order === key) {
-      return x < y ? 1 : x > y ? -1 : 0
-    } else {
-      return x < y ? -1 : x > y ? 1 : 0
-    }
-  })
-}
-
 function EmployeeList() {
   // const { employee, addEmployee } = useContext(EmployeeContext)
   const employees = JSON.parse(localStorage.getItem("employees"))
   const [employeesSort, setEmployeesSort] = useState(employees)
-
   const [pageIndex, setPageIndex] = useState(10)
   const [pages, setPages] = useState(10)
   const [order, setOrder] = useState("")
+  const numberOfEmployees = employeesSort === null ? 0 : employeesSort.length
 
   const handleChange = (e) => {
     const search = e.target.value
@@ -64,8 +46,6 @@ function EmployeeList() {
     const arrows = document.getElementById(key)
     const ascendingArrow = arrows.children[0]
     const descendingArrow = arrows.children[1]
-    // arrow.classList.add("purple")
-    // key === order ? setOrder("") : setOrder(key)
 
     if (key === order) {
       setOrder("")
@@ -83,7 +63,6 @@ function EmployeeList() {
 
     const newEmployeesList = sortByKey(employees, key, order)
     setEmployeesSort([...newEmployeesList])
-    //ajouter sens inverse
   }
 
   const handlePagination = (e) => {
@@ -115,38 +94,38 @@ function EmployeeList() {
   return (
     <main>
       <h2>Current Employees</h2>
-      <div>
-        <select onChange={handleSelect}>
-          <option>10</option>
-          <option>25</option>
-          <option>50</option>
-          <option>100</option>
-        </select>
-      </div>
+      <div className="flexRowSpace">
+        <div>
+          <span>Showing </span>
+          <select onChange={handleSelect}>
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
+          <span> entries</span>
+        </div>
 
-      <div>
-        {/* <Modal
-          buttonType="submit"
-          buttonText="cliquer"
-          htmlTextModal="bonjour"
-        /> */}
-        <label for="search">
-          Search :
-          <input
-            type="search"
-            id="search"
-            name="search"
-            onChange={handleChange}
-          />
-        </label>
+        <div>
+          <label htmlFor="search">
+            Search :{" "}
+            <input
+              type="search"
+              id="search"
+              name="search"
+              onChange={handleChange}
+            />
+          </label>
+        </div>
       </div>
 
       <table>
         <thead>
           <tr>
             <th>
-              <div className="flexRow">
-                First Name{" "}
+              <div className="flexRow arrayHeader">
+                <div className="verticalAlign">First Name </div>
+
                 <button
                   className="flexColumn "
                   value="firstname"
@@ -159,8 +138,8 @@ function EmployeeList() {
               </div>
             </th>
             <th>
-              <div className="flexRow">
-                Last Name{" "}
+              <div className="flexRow arrayHeader">
+                <div className="verticalAlign">Last Name </div>
                 <button
                   className="flexColumn"
                   value="lastname"
@@ -173,8 +152,8 @@ function EmployeeList() {
               </div>
             </th>
             <th>
-              <div className="flexRow">
-                Start Date
+              <div className="flexRow arrayHeader">
+                <div className="verticalAlign">Start Date</div>
                 <button
                   className="flexColumn"
                   value="startdate"
@@ -187,8 +166,8 @@ function EmployeeList() {
               </div>
             </th>
             <th>
-              <div className="flexRow">
-                Department
+              <div className="flexRow arrayHeader">
+                <div className="verticalAlign">Department</div>
                 <button
                   className="flexColumn"
                   value="department"
@@ -201,8 +180,8 @@ function EmployeeList() {
               </div>
             </th>
             <th>
-              <div className="flexRow">
-                Date of Birth
+              <div className="flexRow arrayHeader">
+                <div className="verticalAlign">Date of Birth</div>
                 <button
                   className="flexColumn"
                   value="birthdate"
@@ -215,8 +194,8 @@ function EmployeeList() {
               </div>
             </th>
             <th>
-              <div className="flexRow">
-                Street
+              <div className="flexRow arrayHeader">
+                <div className="verticalAlign">Street</div>
                 <button
                   className="flexColumn"
                   value="street"
@@ -229,8 +208,8 @@ function EmployeeList() {
               </div>
             </th>
             <th>
-              <div className="flexRow">
-                City
+              <div className="flexRow arrayHeader">
+                <div className="verticalAlign">City</div>
                 <button
                   className="flexColumn"
                   value="city"
@@ -243,8 +222,8 @@ function EmployeeList() {
               </div>
             </th>
             <th>
-              <div className="flexRow">
-                State
+              <div className="flexRow arrayHeader">
+                <div className="verticalAlign">State</div>
                 <button
                   className="flexColumn"
                   value="state"
@@ -257,8 +236,8 @@ function EmployeeList() {
               </div>
             </th>
             <th>
-              <div className="flexRow">
-                Zip Code
+              <div className="flexRow arrayHeader">
+                <div className="verticalAlign">Zip Code</div>
                 <button
                   className="flexColumn"
                   value="zipCode"
@@ -275,7 +254,7 @@ function EmployeeList() {
         <tbody>
           {employeesSort ? (
             employeesSort.slice(pages - pageIndex, pages).map((employee) => (
-              <tr>
+              <tr className="cell">
                 <th>{employee.firstname}</th>
                 <th>{employee.lastname}</th>
                 <th>{employee.startdate}</th>
@@ -294,24 +273,28 @@ function EmployeeList() {
           )}
         </tbody>
       </table>
-      <span>
-        Showing {pages - pageIndex + 1} to{" "}
-        {pages < employeesSort.length ? pages : employeesSort.length} of{" "}
-        {employeesSort.length ? employeesSort.length : ""} entries
-      </span>
-      <button value="previous" onClick={handlePagination}>
-        Previous
-      </button>
-      {[...Array(Math.ceil(employeesSort.length / pageIndex))].map((e, i) => (
-        <span className="busterCards" key={i}>
-          <button value={i + 1} onClick={handlePagination}>
-            {i + 1}
-          </button>
+      <div className="flexRowSpace">
+        <span>
+          Showing {pages - pageIndex + 1} to{" "}
+          {pages < numberOfEmployees ? pages : numberOfEmployees} of{" "}
+          {numberOfEmployees} entries
         </span>
-      ))}
-      <button value="next" onClick={handlePagination}>
-        Next
-      </button>
+        <div>
+          <button value="previous" onClick={handlePagination}>
+            Previous
+          </button>
+          {[...Array(Math.ceil(numberOfEmployees / pageIndex))].map((e, i) => (
+            <span className="busterCards" key={i}>
+              <button value={i + 1} onClick={handlePagination}>
+                {i + 1}
+              </button>
+            </span>
+          ))}
+          <button value="next" onClick={handlePagination}>
+            Next
+          </button>
+        </div>
+      </div>
     </main>
   )
 }
