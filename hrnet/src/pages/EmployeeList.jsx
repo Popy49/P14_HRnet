@@ -7,6 +7,7 @@ import { Modal } from "modal-react-library"
 import { useContext } from "react"
 import { useState } from "react"
 import { EmployeeContext } from "../utils/context/EmployeeProvider"
+import fields from "../utils/fields"
 
 /**
  * Display Employees List page
@@ -25,6 +26,29 @@ function EmployeeList() {
   const [order, setOrder] = useState("")
   const numberOfEmployees = employeesSort === null ? 0 : employeesSort.length
 
+  function arrowStyle(key) {
+    const allArrows = document.querySelectorAll(".arrow")
+    allArrows.forEach((arrow) => {
+      arrow.classList.remove("purple")
+      arrow.classList.remove("white")
+      arrow.classList.add("grey")
+    })
+    const arrows = document.getElementById(key)
+    const ascendingArrow = arrows.children[0]
+    const descendingArrow = arrows.children[1]
+    if (key === order) {
+      ascendingArrow.classList.add("white")
+      descendingArrow.classList.add("purple")
+      ascendingArrow.classList.remove("purple")
+      descendingArrow.classList.remove("white")
+    } else {
+      ascendingArrow.classList.add("purple")
+      descendingArrow.classList.add("white")
+      ascendingArrow.classList.remove("white")
+      descendingArrow.classList.remove("purple")
+    }
+  }
+
   const handleChange = (e) => {
     const search = e.target.value
     const employeesFiltered = employees.filter((employee) =>
@@ -37,30 +61,13 @@ function EmployeeList() {
 
   const handleClick = (e) => {
     const key = e.target.closest("button").value
-    const allArrows = document.querySelectorAll(".arrow")
-    allArrows.forEach((arrow) => {
-      arrow.classList.remove("purple")
-      arrow.classList.remove("white")
-      arrow.classList.add("grey")
-    })
-    const arrows = document.getElementById(key)
-    const ascendingArrow = arrows.children[0]
-    const descendingArrow = arrows.children[1]
+    arrowStyle(key)
 
     if (key === order) {
       setOrder("")
-      ascendingArrow.classList.add("white")
-      descendingArrow.classList.add("purple")
-      ascendingArrow.classList.remove("purple")
-      descendingArrow.classList.remove("white")
     } else {
-      ascendingArrow.classList.add("purple")
-      descendingArrow.classList.add("white")
-      ascendingArrow.classList.remove("white")
-      descendingArrow.classList.remove("purple")
       setOrder(key)
     }
-
     const newEmployeesList = sortByKey(employees, key, order)
     setEmployeesSort([...newEmployeesList])
   }
@@ -84,6 +91,14 @@ function EmployeeList() {
         setPages(pages - pageIndex)
       }
     }
+
+    ;[...Array(Math.ceil(numberOfEmployees / pageIndex))].map((index, i) => {
+      let select = document.getElementById(i + 1)
+      select.classList.remove("paginationButton--active")
+      if (parseInt(select.value) === pages / pageIndex) {
+        select.classList.add("paginationButton--active")
+      }
+    })
   }
 
   const handleSelect = (e) => {
@@ -122,7 +137,23 @@ function EmployeeList() {
       <table>
         <thead>
           <tr>
-            <th>
+            {fields.map((field) => (
+              <th>
+                <div className="flexRow arrayHeader">
+                  <div className="verticalAlign">{field.name}</div>
+                  <button
+                    className="flexColumn "
+                    value={field.value}
+                    id={field.value}
+                    onClick={handleClick}
+                  >
+                    <VscTriangleUp className="arrow grey" />
+                    <VscTriangleDown className="arrow grey" />
+                  </button>
+                </div>
+              </th>
+            ))}
+            {/* <th>
               <div className="flexRow arrayHeader">
                 <div className="verticalAlign">First Name </div>
 
@@ -248,7 +279,7 @@ function EmployeeList() {
                   <VscTriangleDown className="arrow grey" />
                 </button>
               </div>
-            </th>
+            </th> */}
           </tr>
         </thead>
         <tbody>
@@ -257,9 +288,9 @@ function EmployeeList() {
               <tr className="cell">
                 <th>{employee.firstname}</th>
                 <th>{employee.lastname}</th>
+                <th>{employee.birthdate}</th>
                 <th>{employee.startdate}</th>
                 <th>{employee.department}</th>
-                <th>{employee.birthdate}</th>
                 <th>{employee.street}</th>
                 <th>{employee.city}</th>
                 <th>{employee.state}</th>
@@ -280,17 +311,30 @@ function EmployeeList() {
           {numberOfEmployees} entries
         </span>
         <div>
-          <button value="previous" onClick={handlePagination}>
+          <button
+            className="paginationButton"
+            value="previous"
+            onClick={handlePagination}
+          >
             Previous
           </button>
           {[...Array(Math.ceil(numberOfEmployees / pageIndex))].map((e, i) => (
-            <span className="busterCards" key={i}>
-              <button value={i + 1} onClick={handlePagination}>
+            <span key={i}>
+              <button
+                className="paginationButton"
+                id={i + 1}
+                value={i + 1}
+                onClick={handlePagination}
+              >
                 {i + 1}
               </button>
             </span>
           ))}
-          <button value="next" onClick={handlePagination}>
+          <button
+            className="paginationButton"
+            value="next"
+            onClick={handlePagination}
+          >
             Next
           </button>
         </div>

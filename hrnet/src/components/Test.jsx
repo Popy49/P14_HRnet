@@ -2,34 +2,40 @@ import { useState } from "react"
 import React from "react"
 import ReactDOM from "react-dom"
 import "./test.css"
-// import "./Modal.css"
+import PropTypes from "prop-types"
+
+Test.propTypes = {
+  buttonType: "button" | "submit" | "reset" | undefined,
+  buttonText: PropTypes.string,
+  htmlTextModal: PropTypes.string,
+  modalIsActive: PropTypes.bool,
+}
 
 function Test(props) {
-  const [isOpen, setisOpen] = useState(false)
+  const {
+    buttonType,
+    buttonText,
+    htmlTextModal,
+    modalIsActive,
+    handleActiveModal,
+  } = props
 
   const handleClick = () => {
-    const modal = document.getElementById("backModal")
-    console.log(modal)
-    setisOpen(!isOpen)
-    if (!isOpen) {
-      const modal = document.getElementById("backModal")
-      modal.classList.add("visible")
-      modal.classList.remove("invisible")
-    } else {
-      const modal = document.getElementById("backModal")
-      modal.classList.remove("visible")
-      modal.classList.add("invisible")
-    }
+    handleActiveModal(!modalIsActive)
   }
 
-  return (
-    <div>
-      <button type={props.buttonType} onClick={handleClick}>
-        {props.buttonText}
+  if (!modalIsActive) {
+    return (
+      <button type={buttonType} onClick={handleClick}>
+        {buttonText}
       </button>
-      <div id="backModal" className=" invisible backModal">
+    )
+  }
+  return ReactDOM.createPortal(
+    <>
+      <div className="backModal">
         <div className="modal">
-          <p className="modal--text">{props.htmlTextModal}</p>
+          {htmlTextModal}
           <button
             className="modal--button"
             onKeyDown={handleClick}
@@ -39,7 +45,8 @@ function Test(props) {
           </button>
         </div>
       </div>
-    </div>
+    </>,
+    document.body
   )
 }
 
