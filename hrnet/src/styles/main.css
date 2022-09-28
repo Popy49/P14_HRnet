@@ -1,7 +1,18 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic&subset=latin,latin-ext");
 
+/* @font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Roboto Regular"), local("Roboto-Regular"),
+    url("https://fonts.googleapis.com/css?family=Roboto:regular&subset=latin,latin-ext")
+      format("woff2");
+  font-display: swap;
+} */
+
 body {
   font-family: Roboto, Arial, Helvetica, sans-serif;
+  font-display: swap;
 }
 
 .header {
@@ -11,6 +22,7 @@ body {
 
 .header__logoImage {
   width: 200px;
+  height: 180px;
 }
 
 .header__title {
@@ -23,7 +35,7 @@ body {
   flex-direction: column;
 }
 
-.formLabel > input {
+input {
   border-radius: 10px;
   padding: 10px;
   font-size: 15px;
@@ -45,7 +57,7 @@ table {
   margin-top: 10px;
 }
 
-thead > tr > th {
+thead > tr > td {
   margin: auto;
   text-align: center;
   border-radius: 5px;
@@ -54,6 +66,12 @@ thead > tr > th {
 
 tbody > tr:nth-child(even) {
   background-color: rgb(216, 216, 216);
+}
+
+td {
+  padding: 6px;
+  display: table-cell;
+  box-sizing: content-box;
 }
 
 tbody > tr {
@@ -121,6 +139,8 @@ button {
 
 .paginationButton {
   font-size: 17px;
+  padding: 15px;
+  margin: 5px;
 }
 
 .paginationButton:hover {
@@ -130,7 +150,9 @@ button {
 }
 
 .paginationButton--active {
-  background-color: red;
+  background-color: black;
+  border-radius: 5px;
+  color: white;
 }
 
 .address {

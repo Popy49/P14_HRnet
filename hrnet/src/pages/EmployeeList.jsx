@@ -1,13 +1,10 @@
 import PropTypes from "prop-types"
-import arrowIcon from "../assets/triangle-svgrepo-com.svg"
 import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc"
-import HeaderArray from "../components/HeaderArray"
 import sortByKey from "../utils/sort"
-import { Modal } from "modal-react-library"
-import { useContext } from "react"
-import { useState } from "react"
-import { EmployeeContext } from "../utils/context/EmployeeProvider"
+import { useContext, useState } from "react"
 import fields from "../utils/fields"
+import { EmployeeContext } from "../utils/context/EmployeeProvider"
+import Pagination from "../components/Pagination"
 
 /**
  * Display Employees List page
@@ -18,14 +15,17 @@ import fields from "../utils/fields"
  */
 
 function EmployeeList() {
-  // const { employee, addEmployee } = useContext(EmployeeContext)
-  const employees = JSON.parse(localStorage.getItem("employees"))
+  // const employees = JSON.parse(localStorage.getItem("employees"))
+  const { employees } = useContext(EmployeeContext)
+
   const [employeesSort, setEmployeesSort] = useState(employees)
   const [pageIndex, setPageIndex] = useState(10)
   const [pages, setPages] = useState(10)
   const [order, setOrder] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
   const numberOfEmployees = employeesSort === null ? 0 : employeesSort.length
 
+  // STYLES Functions
   function arrowStyle(key) {
     const allArrows = document.querySelectorAll(".arrow")
     allArrows.forEach((arrow) => {
@@ -49,6 +49,7 @@ function EmployeeList() {
     }
   }
 
+  //Events functions
   const handleChange = (e) => {
     const search = e.target.value
     const employeesFiltered = employees.filter((employee) =>
@@ -72,38 +73,28 @@ function EmployeeList() {
     setEmployeesSort([...newEmployeesList])
   }
 
+  const handleSelect = (e) => {
+    setPageIndex(parseInt(e.target.value))
+    setPages(parseInt(e.target.value))
+  }
+
   const handlePagination = (e) => {
+    setCurrentPage(e)
     const maxRowInArray =
       pageIndex * Math.ceil(employeesSort.length / pageIndex) + 1
-    if (
-      pageIndex * e.target.value > 0 &&
-      pageIndex * e.target.value < maxRowInArray
-    ) {
-      setPages(pageIndex * e.target.value)
+    if (pageIndex * e > 0 && pageIndex * e < maxRowInArray) {
+      setPages(pageIndex * e)
     }
-    if (e.target.value === "next") {
+    if (e === "next") {
       if (pages < employeesSort.length) {
         setPages(pages + pageIndex)
       }
     }
-    if (e.target.value === "previous") {
+    if (e === "previous") {
       if (pages - pageIndex > 0) {
         setPages(pages - pageIndex)
       }
     }
-
-    ;[...Array(Math.ceil(numberOfEmployees / pageIndex))].map((index, i) => {
-      let select = document.getElementById(i + 1)
-      select.classList.remove("paginationButton--active")
-      if (parseInt(select.value) === pages / pageIndex) {
-        select.classList.add("paginationButton--active")
-      }
-    })
-  }
-
-  const handleSelect = (e) => {
-    setPageIndex(parseInt(e.target.value))
-    setPages(parseInt(e.target.value))
   }
 
   return (
@@ -121,7 +112,7 @@ function EmployeeList() {
           <span> entries</span>
         </div>
 
-        <div>
+        <div className="verticalAlign">
           <label htmlFor="search">
             Search :{" "}
             <input
@@ -138,7 +129,7 @@ function EmployeeList() {
         <thead>
           <tr>
             {fields.map((field) => (
-              <th>
+              <th key={field.name}>
                 <div className="flexRow arrayHeader">
                   <div className="verticalAlign">{field.name}</div>
                   <button
@@ -153,150 +144,25 @@ function EmployeeList() {
                 </div>
               </th>
             ))}
-            {/* <th>
-              <div className="flexRow arrayHeader">
-                <div className="verticalAlign">First Name </div>
-
-                <button
-                  className="flexColumn "
-                  value="firstname"
-                  id="firstname"
-                  onClick={handleClick}
-                >
-                  <VscTriangleUp className="arrow grey" />
-                  <VscTriangleDown className="arrow grey" />
-                </button>
-              </div>
-            </th>
-            <th>
-              <div className="flexRow arrayHeader">
-                <div className="verticalAlign">Last Name </div>
-                <button
-                  className="flexColumn"
-                  value="lastname"
-                  id="lastname"
-                  onClick={handleClick}
-                >
-                  <VscTriangleUp className="arrow grey" />
-                  <VscTriangleDown className="arrow grey" />
-                </button>
-              </div>
-            </th>
-            <th>
-              <div className="flexRow arrayHeader">
-                <div className="verticalAlign">Start Date</div>
-                <button
-                  className="flexColumn"
-                  value="startdate"
-                  id="startdate"
-                  onClick={handleClick}
-                >
-                  <VscTriangleUp className="arrow grey" />
-                  <VscTriangleDown className="arrow grey" />
-                </button>
-              </div>
-            </th>
-            <th>
-              <div className="flexRow arrayHeader">
-                <div className="verticalAlign">Department</div>
-                <button
-                  className="flexColumn"
-                  value="department"
-                  id="department"
-                  onClick={handleClick}
-                >
-                  <VscTriangleUp className="arrow grey" />
-                  <VscTriangleDown className="arrow grey" />
-                </button>
-              </div>
-            </th>
-            <th>
-              <div className="flexRow arrayHeader">
-                <div className="verticalAlign">Date of Birth</div>
-                <button
-                  className="flexColumn"
-                  value="birthdate"
-                  id="birthdate"
-                  onClick={handleClick}
-                >
-                  <VscTriangleUp className="arrow grey" />
-                  <VscTriangleDown className="arrow grey" />
-                </button>
-              </div>
-            </th>
-            <th>
-              <div className="flexRow arrayHeader">
-                <div className="verticalAlign">Street</div>
-                <button
-                  className="flexColumn"
-                  value="street"
-                  id="street"
-                  onClick={handleClick}
-                >
-                  <VscTriangleUp className="arrow grey" />
-                  <VscTriangleDown className="arrow grey" />
-                </button>
-              </div>
-            </th>
-            <th>
-              <div className="flexRow arrayHeader">
-                <div className="verticalAlign">City</div>
-                <button
-                  className="flexColumn"
-                  value="city"
-                  id="city"
-                  onClick={handleClick}
-                >
-                  <VscTriangleUp className="arrow grey" />
-                  <VscTriangleDown className="arrow grey" />
-                </button>
-              </div>
-            </th>
-            <th>
-              <div className="flexRow arrayHeader">
-                <div className="verticalAlign">State</div>
-                <button
-                  className="flexColumn"
-                  value="state"
-                  id="state"
-                  onClick={handleClick}
-                >
-                  <VscTriangleUp className="arrow grey" />
-                  <VscTriangleDown className="arrow grey" />
-                </button>
-              </div>
-            </th>
-            <th>
-              <div className="flexRow arrayHeader">
-                <div className="verticalAlign">Zip Code</div>
-                <button
-                  className="flexColumn"
-                  value="zipCode"
-                  id="zipCode"
-                  onClick={handleClick}
-                >
-                  <VscTriangleUp className="arrow grey" />
-                  <VscTriangleDown className="arrow grey" />
-                </button>
-              </div>
-            </th> */}
           </tr>
         </thead>
         <tbody>
           {employeesSort ? (
-            employeesSort.slice(pages - pageIndex, pages).map((employee) => (
-              <tr className="cell">
-                <th>{employee.firstname}</th>
-                <th>{employee.lastname}</th>
-                <th>{employee.birthdate}</th>
-                <th>{employee.startdate}</th>
-                <th>{employee.department}</th>
-                <th>{employee.street}</th>
-                <th>{employee.city}</th>
-                <th>{employee.state}</th>
-                <th>{employee.zipCode}</th>
-              </tr>
-            ))
+            employeesSort
+              .slice(pages - pageIndex, pages)
+              .map((employee, index) => (
+                <tr className="cell" key={index}>
+                  <td>{employee.firstname}</td>
+                  <td>{employee.lastname}</td>
+                  <td>{employee.birthdate}</td>
+                  <td>{employee.startdate}</td>
+                  <td>{employee.department}</td>
+                  <td>{employee.street}</td>
+                  <td>{employee.city}</td>
+                  <td>{employee.state}</td>
+                  <td>{employee.zipCode}</td>
+                </tr>
+              ))
           ) : (
             <tr>
               <th>No data available in table</th>
@@ -311,32 +177,13 @@ function EmployeeList() {
           {numberOfEmployees} entries
         </span>
         <div>
-          <button
-            className="paginationButton"
-            value="previous"
-            onClick={handlePagination}
-          >
-            Previous
-          </button>
-          {[...Array(Math.ceil(numberOfEmployees / pageIndex))].map((e, i) => (
-            <span key={i}>
-              <button
-                className="paginationButton"
-                id={i + 1}
-                value={i + 1}
-                onClick={handlePagination}
-              >
-                {i + 1}
-              </button>
-            </span>
-          ))}
-          <button
-            className="paginationButton"
-            value="next"
-            onClick={handlePagination}
-          >
-            Next
-          </button>
+          <Pagination
+            onPageChange={handlePagination}
+            currentPage={currentPage}
+            totalCount={numberOfEmployees}
+            siblingCount={1}
+            pageSize={pageIndex}
+          />
         </div>
       </div>
     </main>

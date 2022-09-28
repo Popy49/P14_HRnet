@@ -1,4 +1,3 @@
-import PropTypes from "prop-types"
 import Form from "../components/Form"
 import { Link } from "react-router-dom"
 
