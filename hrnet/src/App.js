@@ -7,10 +7,6 @@ import { EmployeeProvider } from "./utils/context/EmployeeProvider"
 import React from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
-// const employeeList = {}
-
-// const EmployeeListContext = React.createContext(employeeList)
-
 function App() {
   return (
     <div className="App">

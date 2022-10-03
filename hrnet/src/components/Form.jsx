@@ -3,6 +3,15 @@ import { EmployeeContext } from "../utils/context/EmployeeProvider"
 import { departments, states } from "../utils/state"
 import { Modal } from "modal-react-library"
 
+/**
+ * Function to validated inputs form
+ *
+ * @param object of employee inputs
+ * @return object of error
+ * @author JP
+ * @version 1.0
+ */
+
 const validatedFields = (props) => {
   let errors = {}
 
@@ -29,9 +38,16 @@ const validatedFields = (props) => {
   if (isNaN(props.zipCode)) {
     errors.zipCode = "Veuillez entrer un nombre"
   }
-
   return errors
 }
+
+/**
+ * Display Form
+ *
+ * @return void
+ * @author JP
+ * @version 1.0
+ */
 
 function Form() {
   const [modalIsActive, setModalIsActive] = useState(false)

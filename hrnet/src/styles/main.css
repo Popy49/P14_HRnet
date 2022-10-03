@@ -1,15 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic&subset=latin,latin-ext");
 
-/* @font-face {
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Roboto Regular"), local("Roboto-Regular"),
-    url("https://fonts.googleapis.com/css?family=Roboto:regular&subset=latin,latin-ext")
-      format("woff2");
-  font-display: swap;
-} */
-
 body {
   font-family: Roboto, Arial, Helvetica, sans-serif;
   font-display: swap;

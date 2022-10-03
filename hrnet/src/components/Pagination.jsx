@@ -1,6 +1,14 @@
 import React from "react"
-// import classnames from "classnames"
 import { usePagination, DOTS } from "../utils/pagination/usePagination"
+
+/**
+ * Display Pagination
+ *
+ * @params object with pages datas
+ * @return void
+ * @author JP
+ * @version 1.0
+ */
 
 const Pagination = (props) => {
   const {
@@ -9,7 +17,6 @@ const Pagination = (props) => {
     siblingCount = 1,
     currentPage,
     pageSize,
-    className,
   } = props
 
   const paginationRange = usePagination({

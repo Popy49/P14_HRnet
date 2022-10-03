@@ -1,3 +1,14 @@
+/**
+ * Function to sort an array
+ *
+ * @params array with data to sort
+ * @params string with key of sorting
+ * @params string with order of sorting
+ * @return array or undefined
+ * @author JP
+ * @version 1.0
+ */
+
 function sortByKey(array, key, order) {
   return array.sort(function (a, b) {
     var x = a[key]

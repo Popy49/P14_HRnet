@@ -1,12 +1,15 @@
 import { createContext, useState, React } from "react"
 import mockedDatas from "../mockedDatas.json"
 
-export const EmployeeContext = createContext()
+/**
+ * Context for employee list
+ *
+ * @return void
+ * @author JP
+ * @version 1.0
+ */
 
-// export const EmployeeContext = React.createContext({
-//   employee: "",
-//   addEmployee: () => {},
-// })
+export const EmployeeContext = createContext()
 
 export const EmployeeProvider = ({ children }) => {
   const [employees, setEmployee] = useState(mockedDatas)

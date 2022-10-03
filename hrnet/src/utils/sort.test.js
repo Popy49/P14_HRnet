@@ -16,7 +16,5 @@ describe("La fonction sort", () => {
 
     let testedArray = sortByKey(testArray, "name", "trackingId")
     expect(testedArray).toStrictEqual(sortedArray)
-    // let inversedArray = sortByKey(testArray, "name", "name")
-    // expect(testedArray).toStrictEqual(inversedArray)
   })
 })

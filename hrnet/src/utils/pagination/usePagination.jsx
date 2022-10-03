@@ -1,5 +1,14 @@
 import { useMemo } from "react"
 
+/**
+ * Create a range to display pagination
+ *
+ * @params object with pages datas
+ * @return array or undefined
+ * @author JP
+ * @version 1.0
+ */
+
 export const DOTS = "…"
 
 export const usePagination = ({
@@ -11,10 +20,6 @@ export const usePagination = ({
   const paginationRange = useMemo(() => {
     const range = (start, end) => {
       let length = end - start + 1
-      /* 
-            Crée un tableau d'une certaine longueur et définit les éléments qu'il contient de la valeur de 
-          début à la valeur de fin. 
-        */
       return Array.from({ length }, (_, idx) => idx + start)
     }
     const totalPageCount = Math.ceil(totalCount / pageSize)
