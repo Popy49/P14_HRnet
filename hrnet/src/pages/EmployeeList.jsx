@@ -17,7 +17,6 @@ import Pagination from "../components/Pagination"
 function EmployeeList() {
   // const employees = JSON.parse(localStorage.getItem("employees"))
   const { employees } = useContext(EmployeeContext)
-
   const [employeesSort, setEmployeesSort] = useState(employees)
   const [pageIndex, setPageIndex] = useState(10)
   const [pages, setPages] = useState(10)
@@ -62,8 +61,7 @@ function EmployeeList() {
 
   const handleClick = (e) => {
     const key = e.target.closest("button").value
-    arrowStyle(key)
-
+    arrowStyle(key) 
     if (key === order) {
       setOrder("")
     } else {

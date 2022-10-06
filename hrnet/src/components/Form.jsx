@@ -2,6 +2,9 @@ import { useContext, useState } from "react"
 import { EmployeeContext } from "../utils/context/EmployeeProvider"
 import { departments, states } from "../utils/state"
 import { Modal } from "modal-react-library"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
+import Select from "react-select"
 
 /**
  * Function to validated inputs form
@@ -51,6 +54,8 @@ const validatedFields = (props) => {
 
 function Form() {
   const [modalIsActive, setModalIsActive] = useState(false)
+  const [startDate, setStartDate] = useState(new Date())
+  const [birthDate, setBirthDate] = useState(new Date())
   const { employees, addEmployee } = useContext(EmployeeContext)
 
   const handleSubmit = async (e) => {
@@ -101,12 +106,25 @@ function Form() {
         </label>
         <label className="formLabel" htmlFor="birthdate">
           <div className="formName">Date of Birth</div>
-          <input type="date" id="birthdate" name="birthdate" required></input>
+          <DatePicker
+            className="inputField"
+            id="birthdate"
+            name="birthdate"
+            selected={birthDate}
+            onChange={(date) => setBirthDate(date)}
+          />
         </label>
         <label className="formLabel" htmlFor="startdate">
           <div className="formName">Start date</div>{" "}
-          <input type="date" id="startdate" name="startdate" required></input>
+          <DatePicker
+            className="inputField"
+            id="startdate"
+            name="startdate"
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+          />
         </label>
+
         <div className="address">
           <div>Address</div>
           <label className="formLabel" htmlFor="street">
@@ -119,13 +137,7 @@ function Form() {
           </label>
           <label className="formLabel" htmlFor="state">
             <div className="formName">State </div>
-            <select name="state" id="state">
-              {states.map((state) => (
-                <option key={state.name} value={state.abbreviation}>
-                  {state.name}
-                </option>
-              ))}
-            </select>
+            <Select options={states} id="state" name="state" />
           </label>
           <label className="formLabel" htmlFor="zipCode">
             <div className="formName">Zip code </div>
@@ -134,13 +146,7 @@ function Form() {
         </div>
         <label className="formLabel" htmlFor="department">
           <div className="formName">Department </div>
-          <select name="department" id="department">
-            {departments.map((department) => (
-              <option key={department} value={department}>
-                {department}
-              </option>
-            ))}
-          </select>
+          <Select options={departments} id="department" name="department" />
         </label>
         <button className="formSubmitButton" type="submit">
           Envoyer
@@ -149,7 +155,7 @@ function Form() {
           <Modal
             buttonType="submit"
             buttonText="SUBMIT"
-            htmlTextModal="bonjour"
+            htmlTextModal="Employee created"
             modalIsActive={modalIsActive}
             handleActiveModal={setModalIsActive}
           />
